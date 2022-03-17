@@ -18,8 +18,10 @@ var roll_direction = Vector2.LEFT
 
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
+onready var swordHitbox = $HitboxPivot/SwordHitbox
 
 func _ready():
+	swordHitbox.knockback_vector = roll_direction
 	animationTree.active = true
 
 func _physics_process(delta):
@@ -54,6 +56,7 @@ func _get_velocity():
 	direction = _get_direction()
 	if direction != Vector2.ZERO:
 		roll_direction = direction
+		swordHitbox.knockback_vector = direction
 		velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION)
 		animationTree.set("parameters/Idle/blend_position", velocity)
 		animationTree.set("parameters/Run/blend_position", velocity)
